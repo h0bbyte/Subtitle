@@ -54,7 +54,7 @@ func parse(str string) ([]Subtitle) {
 					// Index
 					result[idx].Index, _ = strconv.ParseUint(v, 10, 0)
 			} else {
-				if strings.Index(v, ":") != -1 {
+				if strings.Index(v, "-->") != -1 {
 					// Time
 					var bh, bm, bs, bms, eh, em, es, ems int32
 					_, err = fmt.Sscanf(v, "%02d:%02d:%02d,%03d --> %02d:%02d:%02d,%03d", &bh, &bm, &bs, &bms, &eh, &em, &es, &ems)
@@ -69,7 +69,7 @@ func parse(str string) ([]Subtitle) {
 					}
 				} else {
 					// Content
-					result[idx].Content = v
+					result[idx].Content += v + "\r\n"
 				}
 			}
 		}
@@ -87,7 +87,7 @@ func output(slice []Subtitle) {
 	}
 
 	for _, v := range slice {
-		fmt.Printf("%d\n%s --> %s\n%s\n\n", v.Index, format(v.Begin), format(v.End), v.Content)
+		fmt.Printf("%d\n%s --> %s\n%s\n", v.Index, format(v.Begin), format(v.End), v.Content)
 	}
 }
 
